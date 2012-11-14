@@ -238,7 +238,7 @@ class Generator(object):
             for item in contains:
                 clist.append(item.strip())
         parameters['contains'] = clist
-        parameters['amount'] = int(parameters['amount'])
+        parameters['amount'] = float(parameters['amount'])
 
         return Template(parameters, objectList)
 
