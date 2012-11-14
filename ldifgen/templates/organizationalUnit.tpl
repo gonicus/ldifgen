@@ -6,3 +6,4 @@ dn=%generate_unique_dn(%(base)s,ou,%(ou)s)f
 ou=%structName()f
 description=%(ou)s
 objectClass=organizationalUnit
+objectClass=gosaDepartment
