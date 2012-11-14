@@ -300,7 +300,7 @@ class Generator(object):
 
             if "max_amount" in self._templates[ctype].parameter:
                 max_amount = int(self._templates[ctype].parameter['max_amount'])
-                if ctype in self.all_items and len(self.all_items[ctype] > max_amount):
+                if ctype in self.all_items and len(self.all_items[ctype]) > max_amount:
                     return None
 
             entry = self.create_entry(ctype, item['content']['dn'])
@@ -347,6 +347,7 @@ class Generator(object):
             # Add the container
             ctype = choice(clist)
             _container_amount -= 1
+            addItem(item, ctype)
 
         # Add leaf elements
         while len(leaf_item_amounts):
