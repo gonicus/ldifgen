@@ -10,6 +10,7 @@ from random import randint, choice
 
 
 
+
 class NoSuchTemplateException(Exception):
     pass
 
