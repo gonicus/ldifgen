@@ -1,6 +1,6 @@
 from itertools import combinations
 from ldifgen.extension import IExtension
-from ldifgen.generator import NoSuchAttribute
+from ldifgen.generator import NoSuchAttribute, SkipEntry
 
 
 class UniqueDNExtension(IExtension):
@@ -27,7 +27,7 @@ class UniqueDNExtension(IExtension):
                             break
 
         if dn in self._cache:
-            raise NoSuchAttribute()
+            raise SkipEntry()
 
         self._cache[dn] = None
 
