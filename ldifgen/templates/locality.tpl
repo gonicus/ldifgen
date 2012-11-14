@@ -1,5 +1,5 @@
 %amount=5
-%contains=locality,organization,organizationalUnit
+%contains=locality,organization,organizationalUnit,country
 
 
 dn=%generate_unique_dn(%(base)s,l,%(l)s)f
