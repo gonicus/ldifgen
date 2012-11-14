@@ -297,6 +297,12 @@ class Generator(object):
 
         # Method to add a new item
         def addItem(item, ctype):
+
+            if "unique" in self._templates[ctype].parameter:
+                unique = int(self._templates[ctype].parameter['unique'])
+                if ctype in self.all_items and len(self.all_items[ctype] > unique):
+                    return None
+
             entry = self.create_entry(ctype, item['content']['dn'])
             if not entry:
                 return None
@@ -340,7 +346,6 @@ class Generator(object):
 
             # Add the container
             ctype = choice(clist)
-            new_item = addItem(item, ctype)
             _container_amount -= 1
 
         # Add leaf elements
@@ -361,7 +366,7 @@ class Generator(object):
 
             # Randomly choose one parent and add a leaf item
             container = choice(containers)
-            it = addItem(choice(self.all_items[container]), ctype)
+            addItem(choice(self.all_items[container]), ctype)
 
         # Method to print the tree
         def print_rec_content(item):

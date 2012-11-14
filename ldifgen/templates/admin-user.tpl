@@ -1,5 +1,6 @@
 %amount=0
 %contains=
+%unique=1
 
 dn=cn=GOsa Administrator,%(base)s
 objectClass=top
