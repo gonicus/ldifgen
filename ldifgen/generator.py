@@ -1,5 +1,6 @@
 import os
 import re
+import pkg_resources
 from datetime import timedelta, datetime
 from random import randint, choice, randrange, choice, sample
 from ldifgen.line import Line
@@ -148,17 +149,18 @@ class Generator(object):
 
     def givenName(self, args):
         if bool(randint(0, 1)):
-            return [self._name_gen('data/givennames-f.txt', 85)]
+            return [self._name_gen('givennames-f.txt', 85)]
 
-        return [self._name_gen('data/givennames-m.txt', 85)]
+        return [self._name_gen('givennames-m.txt', 85)]
 
 
     def sn(self, args):
-        return [self._name_gen('data/surnames.txt', 90).strip()]
+        return [self._name_gen('surnames.txt', 90).strip()]
 
 
     def _name_gen(self, lst, multi_name_chance=100):
-        lst = list(open(lst))
+        data = pkg_resources.resource_filename('ldifgen', 'data')
+        lst = list(open(os.path.join(data, lst)))
 
         if randint(0, 100) > multi_name_chance:
             return choice(lst).strip() + " " + choice(lst).strip()
