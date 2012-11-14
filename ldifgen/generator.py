@@ -99,7 +99,7 @@ class FunctionHandler(object):
 
 class AttributeHandler(object):
     """
-    This class represents a variable replacement of a tempalte
+    This class represents a variable replacement of a template
     e.g. %(variableName)s
 
     When this class is processed, it returns the content of the
