@@ -1,0 +1,36 @@
+%amount=20
+%contains=
+
+dn=%generate_unique_dn(%(base)s,cn,%(cn)s)f
+objectClass=top
+objectClass=person
+objectClass=inetOrgPerson
+objectClass=organizationalPerson
+objectClass=posixAccount
+objectClass=shadowAccount
+objectClass=sambaSamAccount
+objectClass=gosaAccount
+sn=%sn()f
+dob=%dob()f
+givenName=%givenName()f
+cn=%(givenName)s %(sn)s
+uid=%generate_unique_uid(sn,givenName)f
+homeDirectory=/home/%(uid)s
+userPassword=%generate_password()f
+gidNumber=1000
+uidNumber=%generate_unique_id(uidNumber)f
+gecos=%(uid)s
+loginShell=/bin/bash
+mail=%(uid)s@example.net
+homePhone=%generate_phone_number()f
+telephoneNumber=%generate_phone_number()f
+sambaSID=S-0-8-15-3336
+sambaLogonTime=0
+sambaLogoffTime=2147483647
+sambaAcctFlags=[UX          ]
+sambaMungedDial=IAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAUAAQABoACAABAEMAdAB4AEMAZgBnAFAAcgBlAHMAZQBuAHQANTUxZTBiYjAYAAgAAQBDAHQAeABDAGYAZwBGAGwAYQBnAHMAMQAwMDAwMDEwMBYAAAABAEMAdAB4AEMAYQBsAGwAYgBhAGMAawASAAgAAQBDAHQAeABTAGgAYQBkAG8AdwAwMTAwMDAwMCIAAAABAEMAdAB4AEsAZQB5AGIAbwBhAHIAZABMAGEAeQBvAHUAdAAqAAIAAQBDAHQAeABNAGkAbgBFAG4AYwByAHkAcAB0AGkAbwBuAEwAZQB2AGUAbAAwMCAAAgABAEMAdAB4AFcAbwByAGsARABpAHIAZQBjAHQAbwByAHkAMDAgAAIAAQBDAHQAeABOAFcATABvAGcAbwBuAFMAZQByAHYAZQByADAwGAACAAEAQwB0AHgAVwBGAEgAbwBtAGUARABpAHIAMDAiAAIAAQBDAHQAeABXAEYASABvAG0AZQBEAGkAcgBEAHIAaQB2AGUAMDAgAAIAAQBDAHQAeABXAEYAUAByAG8AZgBpAGwAZQBQAGEAdABoADAwIgACAAEAQwB0AHgASQBuAGkAdABpAGEAbABQAHIAbwBnAHIAYQBtADAwIgACAAEAQwB0AHgAQwBhAGwAbABiAGEAYwBrAE4AdQBtAGIAZQByADAwKAAIAAEAQwB0AHgATQBhAHgAQwBvAG4AbgBlAGMAdABpAG8AbgBUAGkAbQBlADAwMDAwMDAwLgAIAAEAQwB0AHgATQBhAHgARABpAHMAYwBvAG4AbgBlAGMAdABpAG8AbgBUAGkAbQBlADAwMDAwMDAwHAAIAAEAQwB0AHgATQBhAHgASQBkAGwAZQBUAGkAbQBlADAwMDAwMDAw
+sambaHomePath=\\data\
+sambaHomeDrive=D:
+sambaPrimaryGroupSID=S-0-8-15-513
+sambaDomainName=Mayor Greg Fischer
+
