@@ -291,7 +291,7 @@ class Generator(object):
         parent_cache = {}
         def getParentList(ctype):
             if ctype not in parent_cache:
-                parent_cache[ctype] = [t for t in self._templates if ctype in self._templates[t].parameter['contains']]
+                parent_cache[ctype] = [t for t in self._templates if ctype in self._templates[t].parameter['contains'] and t in self.all_items]
             return parent_cache[ctype]
 
         # Method to add a new item
@@ -336,22 +336,25 @@ class Generator(object):
                     it = addItem(new_item, fitem)
                     _container_amount -= 1
 
+        # Add leaf elements
         while len(leaf_item_amounts):
 
             # Randomly get one leaf type
             ctype = choice(leaf_item_amounts.keys())
 
-            # Get possible parents
-            containers = getParentList(ctype)
-
-            # Randomly choose one parent and add a leaf item
-            container = choice(containers)
-            it = addItem(choice(self.all_items[container]), ctype)
-
             # Decrease leaf item amount
             leaf_item_amounts[ctype] -= 1
             if leaf_item_amounts[ctype] <=0:
                 del(leaf_item_amounts[ctype])
+
+            # Get possible parents
+            containers = getParentList(ctype)
+            if not len(containers):
+                continue
+
+            # Randomly choose one parent and add a leaf item
+            container = choice(containers)
+            it = addItem(choice(self.all_items[container]), ctype)
 
         # Method to print the tree
         def print_rec_content(item):
