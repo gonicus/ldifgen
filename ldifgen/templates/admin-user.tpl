@@ -22,4 +22,4 @@ loginShell=/bin/bash
 mail=admin@example.net
 homePhone=%generate_phone_number()f
 telephoneNumber=%generate_phone_number()f
-_dummy=%add_gosa_acls(%(ldap_base)s,%(dn)s,psub,YWxsO3J3Y2RtCg==)f
+_dummy=%add_gosa_acls(%(ldap_base)s,%(dn)s,psub,YWxsO3J3Y2Rt)f
