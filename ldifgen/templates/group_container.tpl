@@ -1,5 +1,5 @@
 %amount=0
-%contains=group
+%contains=group,group-of-names
 
 
 dn=ou=groups,%(base)s

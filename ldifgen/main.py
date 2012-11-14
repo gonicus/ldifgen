@@ -10,7 +10,7 @@ def main():
     p.add_argument('-t', '--templatePath', dest="templatePath", default=pkg_resources.resource_filename('ldifgen', 'templates'))
     p.add_argument('-c', '--number-of-containers', dest="containerAmount", default=100, type=int)
     p.add_argument('-n', '--number-of-leafs', dest="leafAmount", default=1000, type=int)
-    p.add_argument('-d', '--tree-depth', dest="treeDepth", default=10, type=int)
+    p.add_argument('-d', '--tree-depth', dest="treeDepth", default=20, type=int)
     p.add_argument('-b', '--base', dest="base", default="dc=example,dc=net", type=str)
     args = p.parse_args()
 
