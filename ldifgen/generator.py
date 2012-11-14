@@ -247,16 +247,14 @@ class Generator(object):
         Generate the ldif output.
         """
 
+        _root_type = "domain"
         _container_amount = self._config['containerAmount']
         _leaf_amount = self._config['leafAmount']
         _max_depth = self._config['treeDepth']
         _base = self._config['base']
 
         # The tree root
-        tree = {'item': 'domain', 'children': {}, 'content': {'dn' : [_base]}, 'base': '', 'dn': ''}
-
-        tree = {'item': 'domain', 'children': {}, 'content': self.create_entry("domain", [_base])}
-
+        tree = {'item': _root_type, 'children': {}, 'content': self.create_entry(_root_type, [_base])}
 
         # A list of all items
         allitems = []
@@ -311,7 +309,19 @@ class Generator(object):
                 self.all_items[ctype] = []
             self.all_items[ctype].append(newitem)
             item['children'][len(item['children'].keys())] = newitem
+
+            # Add forced elements
+            if "force_append" in self._templates[ctype].parameter:
+                for fitem in self._templates[ctype].parameter['force_append'].split(","):
+                    addItem(newitem, fitem)
+
             return newitem
+
+
+        # Add forced elements to the root-entry
+        if "force_append" in self._templates[_root_type].parameter:
+            for fitem in self._templates[_root_type].parameter['force_append'].split(","):
+                addItem(tree, fitem)
 
         # Create container tree.
         while _container_amount > 0:
@@ -332,12 +342,6 @@ class Generator(object):
             ctype = choice(clist)
             new_item = addItem(item, ctype)
             _container_amount -= 1
-
-            # Add forced elements
-            if "force_append" in self._templates[ctype].parameter:
-                for fitem in self._templates[ctype].parameter['force_append'].split(","):
-                    it = addItem(new_item, fitem)
-                    _container_amount -= 1
 
         # Add leaf elements
         while len(leaf_item_amounts):

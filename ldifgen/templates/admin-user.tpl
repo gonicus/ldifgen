@@ -1,7 +1,7 @@
 %amount=0
 %contains=
 
-dn=cn=GOsa Administrator,dc=%base
+dn=cn=GOsa Administrator,%(base)s
 objectClass=top
 objectClass=person
 objectClass=inetOrgPerson

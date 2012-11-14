@@ -1,6 +1,6 @@
 %amount=0
 %contains=organization,locality,organizationalUnit
-%force_append=admin-user
+%force_append=people_container,group_container
 
 
 dn=%(base)s
