@@ -255,6 +255,9 @@ class Generator(object):
         # The tree root
         tree = {'item': 'domain', 'children': {}, 'content': {'dn' : [_base]}, 'base': '', 'dn': ''}
 
+        tree = {'item': 'domain', 'children': {}, 'content': self.create_entry("domain", [_base])}
+
+
         # A list of all items
         allitems = []
 
