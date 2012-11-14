@@ -1,7 +1,6 @@
 import os
 import pkg_resources
-from base64 import b64encode
-from random import randint
+from base64 import b64encode, b64decode
 from ldifgen.extension import IExtension
 
 
@@ -28,7 +27,7 @@ class AddGOsaAcls(IExtension):
 
         aclEntry = str(len(target_item['content']['gosaAclEntry'])) + ":" + kind + ":"
         aclEntry += b64encode(subject) + ":"
-        aclEntry += action
+        aclEntry += b64decode(action)
         target_item['content']['gosaAclEntry'].append(aclEntry)
 
         return [""]
