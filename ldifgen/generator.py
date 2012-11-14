@@ -352,7 +352,7 @@ class Generator(object):
             dn = item['content']['dn'][0]
             print "# " + item['item']
             del(item['content']['dn'])
-            print ldif.CreateLDIF(dn, item['content'])
+            print ldif.CreateLDIF(dn, item['content']),
             if len(item['children'].keys()):
                 for sitem in item['children']:
                     print_rec_content(item['children'][sitem])
