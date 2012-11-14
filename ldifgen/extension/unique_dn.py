@@ -16,7 +16,7 @@ class UniqueDNExtension(IExtension):
 
         dn = "%s=%s,%s" % (attribute, value, base)
         if dn in self._cache:
-            av_attrs = filter(lambda x: not x in ['objectClass', 'base', attribute], entry.keys())
+            av_attrs = filter(lambda x: not x in ['objectClass', 'base', 'ldap_base', attribute], entry.keys())
             for i in range(0, len(av_attrs)):
                 com = combinations(av_attrs, i + 1)
                 if com:
