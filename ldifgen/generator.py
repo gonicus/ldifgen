@@ -253,14 +253,10 @@ class Generator(object):
         # A list of all items
         allitems = []
 
-        # A list of types to items
-        items_by_type = {}
-
         # Leafs types
         leaf_item_types = []
         leaf_item_amounts = {}
 
-        self.all_items = items_by_type
         self.tree_items = tree
 
 
@@ -300,9 +296,9 @@ class Generator(object):
                        'base': item['content']['dn'],
                        'content': self.create_entry(ctype, item['content']['dn'])}
             allitems.append(newitem)
-            if not ctype in items_by_type:
-                items_by_type[ctype] = []
-            items_by_type[ctype].append(newitem)
+            if not ctype in self.all_items:
+                self.all_items[ctype] = []
+            self.all_items[ctype].append(newitem)
             item['children'][len(item['children'].keys())] = newitem
             return newitem
 
@@ -345,7 +341,7 @@ class Generator(object):
 
             # Randomly choose one parent and add a leaf item
             container = choice(containers)
-            addItem(choice(items_by_type[container]), ctype)
+            addItem(choice(self.all_items[container]), ctype)
 
         # Method to print the tree
         def print_rec_content(item):
