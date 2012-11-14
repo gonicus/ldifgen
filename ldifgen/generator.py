@@ -169,9 +169,10 @@ class Generator(object):
         for root, subFolders, files in os.walk(self._templatePath):
             for file in files:
                 path = os.path.join(root, file)
-                self._templates[os.path.splitext(file)[0]] = self._processTemplate(open(path).read());
+                if os.path.splitext(path)[1] == ".tpl":
+                    self._templates[os.path.splitext(file)[0]] = self._processTemplate(path)
 
-    def _processTemplate(self, content):
+    def _processTemplate(self, path):
         """
         Parses the template into a some-kind of a process list.
         This process-list will then be executed in the generate method
@@ -180,7 +181,7 @@ class Generator(object):
 
         # Parse each line of the template and try to find
         # commands like %function()f or %(variable)s
-        lines = content.split("\n")
+        lines = open(path).read().split("\n")
         objectList = []
         regex = "(^.*(%([a-zA-Z_][a-zA-Z0-9_-]*)?\([^\)\(]*\)[fs]).*)$"
         parameters = {}
@@ -226,9 +227,9 @@ class Generator(object):
                 objectList.append(line_object)
 
         if not "contains" in parameters:
-            raise Exception("missing template parameter: %s" % ("contains"))
+            raise Exception("failed to parse template: %s. Missing template parameter: %s" % (path, "contains"))
         if not "amount" in parameters:
-            raise Exception("missing template parameter: %s" % ("amount"))
+            raise Exception("failed to parse template: %s. Missing template parameter: %s" % (path, "amount"))
 
         # Prepare the contains parameter
         clist = []
@@ -339,9 +340,6 @@ class Generator(object):
 
             # Randomly get one leaf type
             ctype = choice(leaf_item_amounts.keys())
-            leaf_item_amounts[ctype] -= 1
-            if leaf_item_amounts[ctype] <=0:
-                del(leaf_item_amounts[ctype])
 
             # Get possible parents
             containers = getParentList(ctype)
@@ -349,6 +347,11 @@ class Generator(object):
             # Randomly choose one parent and add a leaf item
             container = choice(containers)
             it = addItem(choice(self.all_items[container]), ctype)
+
+            # Decrease leaf item amount
+            leaf_item_amounts[ctype] -= 1
+            if leaf_item_amounts[ctype] <=0:
+                del(leaf_item_amounts[ctype])
 
         # Method to print the tree
         def print_rec_content(item):
