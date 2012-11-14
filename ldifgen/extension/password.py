@@ -12,8 +12,6 @@ class PasswordExtension(IExtension):
         super(PasswordExtension, self).__init__(generator)
 
     def execute(self, entry, pwd=None):
-
-        print pwd
         if not pwd:
             pwd = ""
             for i in range(10): #@UnusedVariable
