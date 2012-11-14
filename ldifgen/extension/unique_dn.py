@@ -5,8 +5,8 @@ from ldifgen.generator import NoSuchAttribute
 class UniqueDNExtension(IExtension):
     _cache = None
 
-    def __init__(self, allref):
-        super(UniqueDNExtension, self).__init__(allref)
+    def __init__(self, generator):
+        super(UniqueDNExtension, self).__init__(generator)
         self._cache = {}
 
     def execute(self, entry, base, attribute, value):

@@ -7,8 +7,8 @@ from ldifgen.extension import IExtension
 class UniqueUidExtension(IExtension):
     _cache = None
 
-    def __init__(self, allref):
-        super(UniqueUidExtension, self).__init__(allref)
+    def __init__(self, generator):
+        super(UniqueUidExtension, self).__init__(generator)
         self._cache = {}
 
     def execute(self, entry, *args):
