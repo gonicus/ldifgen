@@ -304,6 +304,7 @@ class Generator(object):
                 items_by_type[ctype] = []
             items_by_type[ctype].append(newitem)
             item['children'][len(item['children'].keys())] = newitem
+            return newitem
 
         # Create container tree.
         while _container_amount > 0:
@@ -322,13 +323,13 @@ class Generator(object):
 
             # Add the container
             ctype = choice(clist)
-            addItem(item, ctype)
+            new_item = addItem(item, ctype)
             _container_amount -= 1
 
             # Add forced elements
             if "force_append" in self._templates[ctype].parameter:
                 for fitem in self._templates[ctype].parameter['force_append'].split(","):
-                    addItem(item, fitem)
+                    addItem(new_item, fitem)
                     _container_amount -= 1
 
         while len(leaf_item_amounts):
