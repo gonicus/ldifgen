@@ -114,16 +114,21 @@ class AttributeHandler(object):
 
 
 class Generator(object):
-    _use = {}
+
     _templates = {}
     _templatePath = None
+    _config = None
 
     all_items = None
     tree_items = None
 
     def __init__(self, templatePath):
+        self._config = {'containerAmount': 20, 'leafAmount': 100, 'treeDepth': 5, 'base': 'dx=example,dc=net'}
         self._templatePath = templatePath
         self._loadTemplates();
+
+    def set(self, name, value):
+        self._config[name] = value
 
     def generate_unique_dn(self, args):
         res = ["cn=%s,%s" % (args[1], args[0])]
@@ -166,15 +171,6 @@ class Generator(object):
             return choice(lst).strip() + " " + choice(lst).strip()
 
         return choice(lst).strip()
-
-    def use(self, o_type, amount):
-        """
-        Tell the generator to use the given type of object while generating
-        the ldif.
-        """
-        if o_type not in self._templates:
-            raise NoSuchTemplateException("missing template for '%s'!" % (o_type))
-        self._use[o_type] = amount
 
     def _loadTemplates(self):
         """
@@ -263,10 +259,10 @@ class Generator(object):
         Generate the ldif output.
         """
 
-        _container_amount = 200
-        _leaf_amount = 1000
-        _max_depth = 10;
-        _base = "dc=gonicus,dc=de"
+        _container_amount = self._config['containerAmount']
+        _leaf_amount = self._config['leafAmount']
+        _max_depth = self._config['treeDepth']
+        _base = self._config['base']
 
         # The tree root
         tree = {'item': 'domain', 'children': {}, 'content': {'dn' : [_base]}, 'base': '', 'dn': ''}
