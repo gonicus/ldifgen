@@ -1,5 +1,5 @@
 %amount=0
-%contains=user
+%contains=user,gosa-user
 %force_append=admin-user
 
 

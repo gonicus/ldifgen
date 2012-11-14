@@ -46,6 +46,7 @@ setup(
         dob = ldifgen.extension.dob:DOBExtension
         givenName = ldifgen.extension.givenname:GivenNameExtension
         sn = ldifgen.extension.sn:SnExtension
+        structName = ldifgen.extension.structname:StructNameExtension
         select_multiple = ldifgen.extension.multi_select:MultiSelectExtension
         generate_unique_dn = ldifgen.extension.unique_dn:UniqueDNExtension
         generate_unique_uid = ldifgen.extension.unique_uid:UniqueUidExtension
