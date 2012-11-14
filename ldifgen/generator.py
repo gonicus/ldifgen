@@ -387,6 +387,9 @@ class Generator(object):
 
 
     def create_entry(self, template, base):
+        """
+        Create a new entry based on the given template
+        """
 
         self.current_object = {'base' : base}
 
@@ -394,6 +397,8 @@ class Generator(object):
         results = {}
         last_len = 0
         last_exception = None
+
+        # Walk through each line until all are processed
         while len(lines_left) and last_len != len(lines_left):
             last_len = len(lines_left)
             for i in range(0, last_len):
