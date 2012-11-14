@@ -254,17 +254,17 @@ class Generator(object):
         _base = self._config['base']
 
         # The tree root
-        tree = {'item': _root_type, 'children': {}, 'content': self.create_entry(_root_type, [_base])}
+        tree = {'item': _root_type, 'children': {}, 'content': self.create_entry(_root_type, [_base], [_base])}
 
         # A list of all items
-        allitems = []
+        allitems = [tree]
 
         # Leafs types
         leaf_item_types = []
         leaf_item_amounts = {}
 
         self.tree_items = tree
-
+        self.all_items[_root_type] = [tree]
 
         # Calculate amount of leaf elements
         _leaf_amount_frac = 0
@@ -303,7 +303,7 @@ class Generator(object):
                 if ctype in self.all_items and len(self.all_items[ctype]) >= max_amount:
                     return None
 
-            entry = self.create_entry(ctype, item['content']['dn'])
+            entry = self.create_entry(ctype, item['content']['dn'], [_base])
             if not entry:
                 return None
             newitem = {'item': ctype,
@@ -381,12 +381,12 @@ class Generator(object):
 
         print_rec_content(tree)
 
-    def create_entry(self, template, base):
+    def create_entry(self, template, base, ldap_base):
         """
         Create a new entry based on the given template
         """
 
-        self.current_object = {'base' : base}
+        self.current_object = {'base' : base, 'ldap_base': ldap_base}
 
         lines_left = range(0, len(self._templates[template].getLines()))
         results = {}
@@ -418,6 +418,8 @@ class Generator(object):
 
         result = {}
         for line in self._templates[template].getLines():
+            if line.attrName[0] == "_" or not line.attrName:
+                continue
             if line.attrName in result:
                 result[line.attrName] = result[line.attrName] + results[line.id]
             else:

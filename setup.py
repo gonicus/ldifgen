@@ -53,6 +53,7 @@ setup(
         generate_unique_id = ldifgen.extension.unique_id:UniqueIdExtension
         generate_phone_number = ldifgen.extension.phone:PhoneExtension
         extract_cn = ldifgen.extension.extract_cn:ExtractCN
+        add_gosa_acls = ldifgen.extension.gosa:AddGOsaAcls
 
     """,
 )
