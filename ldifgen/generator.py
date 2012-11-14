@@ -1,5 +1,6 @@
 import os
 import re
+import ldif
 import pkg_resources
 from datetime import timedelta, datetime
 from random import randint, choice, randrange, choice, sample
@@ -372,20 +373,12 @@ class Generator(object):
             container = choice(containers)
             addItem(choice(items_by_type[container]), ctype)
 
-
-        # Method to print the tree
-        def print_rec(item, depth=0):
-            print depth * " --> " + item['item']
-            if len(item['children'].keys()):
-                for sitem in item['children']:
-                    print_rec(item['children'][sitem], depth + 1)
-
         # Method to print the tree
         def print_rec_content(item):
-            print "\n\n##" + item['item']
-            for k in item['content']:
-                for entry in item['content'][k]:
-                    print "%s: %s" % (k, entry)
+            dn = item['content']['dn'][0]
+            print "# " + item['item']
+            del(item['content']['dn'])
+            print ldif.CreateLDIF(dn, item['content'])
             if len(item['children'].keys()):
                 for sitem in item['children']:
                     print_rec_content(item['children'][sitem])
