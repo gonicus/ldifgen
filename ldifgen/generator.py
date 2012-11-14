@@ -66,16 +66,26 @@ class FunctionHandler(object):
         except:
             raise NoSuchFunction("no such function %s!" % (self.name))
 
+        # Process the parameters list to have a single
+        # array containing the parameter as strings.
         params = []
         for para in self.params:
+
+            # Walk through all items of this parameter
+            # and combine them to a single string.
             result = ['']
             for item in para:
+
+                # Combine strings
                 if type(item) == str:
                     tmp_res = []
                     for e in result:
                         tmp_res.append(e + item)
                     result = tmp_res
                 else:
+
+                    # Process non-string items and then append them to the
+                    # existing results
                     tmp = item.process()
                     tmp_res = []
                     for t in tmp:
@@ -84,8 +94,7 @@ class FunctionHandler(object):
                     result = tmp_res
             params.append("".join(result))
 
-        res = func(params)
-        return res
+        return func(params)
 
 
 class AttributeHandler(object):
