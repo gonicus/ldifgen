@@ -247,7 +247,7 @@ class Generator(object):
         Generate the ldif output.
         """
 
-        _root_type = "domain"
+        _root_type = "root"
         _container_amount = self._config['containerAmount']
         _leaf_amount = self._config['leafAmount']
         _max_depth = self._config['treeDepth']
