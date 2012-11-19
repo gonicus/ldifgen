@@ -120,7 +120,8 @@ class Generator(object):
 
     def __init__(self, templatePath):
         self._templatePath = templatePath
-        self._loadTemplates();
+        self._loadTemplates()
+        self._loadExtensions()
 
     def generate_unique_dn(self, args):
         res = ["cn=%s,%s" % (args[1], args[0])]
@@ -130,36 +131,8 @@ class Generator(object):
         uid = ''.join(args).lower()[0:8]
         return [uid]
 
-    def dob(self, args):
-        """
-        Generate date of birth for people between 18 and 99
-        """
-        start = datetime.now() - timedelta(days=365*100)
-        end = datetime.now() - timedelta(days=365*18)
-        return [(start + timedelta(seconds=randint(0, int((end - start).total_seconds())))).strftime("%Y-%m-%d")]
-
     def select_multiple(self, args):
         return( ["a", "b"])
-
-    def givenName(self, args):
-        if bool(randint(0, 1)):
-            return [self._name_gen('givennames-f.txt', 85)]
-
-        return [self._name_gen('givennames-m.txt', 85)]
-
-
-    def sn(self, args):
-        return [self._name_gen('surnames.txt', 90).strip()]
-
-
-    def _name_gen(self, lst, multi_name_chance=100):
-        data = pkg_resources.resource_filename('ldifgen', 'data')
-        lst = list(open(os.path.join(data, lst)))
-
-        if randint(0, 100) > multi_name_chance:
-            return choice(lst).strip() + " " + choice(lst).strip()
-
-        return choice(lst).strip()
 
     def use(self, o_type, amount):
         """
@@ -169,6 +142,9 @@ class Generator(object):
         if o_type not in self._templates:
             raise NoSuchTemplateException("missing template for '%s'!" % (o_type))
         self._use[o_type] = amount
+
+    def _loadExtensions(self):
+        pass
 
     def _loadTemplates(self):
         """
@@ -250,7 +226,6 @@ class Generator(object):
         parameters['amount'] = int(parameters['amount'])
 
         return Template(parameters, objectList)
-
 
     def generate(self):
         """
@@ -366,7 +341,6 @@ class Generator(object):
                     print_rec_content(item['children'][sitem])
 
         print_rec_content(tree)
-
 
     def create_entry(self, template, base):
 
