@@ -34,7 +34,8 @@ setup(
     zip_safe = True,
 
     install_requires = [
-        'python_ldap'
+        'python_ldap',
+        'unidecode'
     ],
 
     entry_points = """
