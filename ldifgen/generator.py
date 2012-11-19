@@ -2,7 +2,7 @@ import os
 import re
 import pkg_resources
 from datetime import timedelta, datetime
-from random import randint, choice, randrange
+from random import randint, choice, randrange, choice, sample
 from ldifgen.line import Line
 from ldifgen.template import Template
 
@@ -118,6 +118,9 @@ class Generator(object):
     _templates = {}
     _templatePath = None
 
+    all_items = None
+    tree_items = None
+
     def __init__(self, templatePath):
         self._templatePath = templatePath
         self._loadTemplates()
@@ -132,7 +135,10 @@ class Generator(object):
         return [uid]
 
     def select_multiple(self, args):
-        return( ["a", "b"])
+        if "user" in self.all_items:
+            uids = [f['content']['uid'][0] for f in self.all_items['user']]
+            return(sample(uids, len(uids) % 10))
+        return []
 
     def use(self, o_type, amount):
         """
@@ -250,6 +256,10 @@ class Generator(object):
         leaf_item_types = []
         leaf_item_amounts = {}
 
+        self.all_items = items_by_type
+        self.tree_items = tree
+
+
         # Calculate amount of leaf elements
         _leaf_amount_frac = 0
         for template in self._templates:
@@ -317,12 +327,21 @@ class Generator(object):
                     addItem(item, fitem)
                     _container_amount -= 1
 
-        # Insert leaf elements
-        for template in leaf_item_types:
-            containers = getParentList(template)
-            for i in range(leaf_item_amounts[template]):
-                for container in containers:
-                    addItem(choice(items_by_type[container]), template)
+        while len(leaf_item_amounts):
+
+            # Randomly get one leaf type
+            ctype = choice(leaf_item_amounts.keys())
+            leaf_item_amounts[ctype] -= 1
+            if leaf_item_amounts[ctype] <=0:
+                del(leaf_item_amounts[ctype])
+
+            # Get possible parents
+            containers = getParentList(ctype)
+
+            # Randomly choose one parent and add a leaf item
+            container = choice(containers)
+            addItem(choice(items_by_type[container]), ctype)
+
 
         # Method to print the tree
         def print_rec(item, depth=0):
@@ -335,7 +354,8 @@ class Generator(object):
         def print_rec_content(item):
             print "\n\n##" + item['item']
             for k in item['content']:
-                print "%s: %s" % (k, item['content'][k])
+                for entry in item['content'][k]:
+                    print "%s: %s" % (k, entry)
             if len(item['children'].keys()):
                 for sitem in item['children']:
                     print_rec_content(item['children'][sitem])
