@@ -9,14 +9,11 @@ class UniqueDNExtension(IExtension):
         super(UniqueDNExtension, self).__init__(allref)
         self._cache = {}
 
-    def execute(self, entry, base, rdn_attribute):
-        print "-"*80
-        print entry
-        print "-"*80
-        if not rdn_attribute in entry:
+    def execute(self, entry, base, attribute, value):
+        if not attribute in entry:
             raise NoSuchAttribute()
 
-        res = "%s=%s,%s" % (rdn_attribute, entry[rdn_attribute][0], base)
+        res = "%s=%s,%s" % (attribute, value[0], base)
         if res in self._cache:
             #TODO: recursively find a not used RDN
             raise NoSuchAttribute()
