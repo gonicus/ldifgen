@@ -1,5 +1,6 @@
 import os
 import re
+import ldif
 import pkg_resources
 from datetime import timedelta, datetime
 from random import randint, choice, randrange, choice, sample
@@ -99,7 +100,7 @@ class FunctionHandler(object):
 
 class AttributeHandler(object):
     """
-    This class represents a variable replacement of a tempalte
+    This class represents a variable replacement of a template
     e.g. %(variableName)s
 
     When this class is processed, it returns the content of the
@@ -346,20 +347,12 @@ class Generator(object):
             container = choice(containers)
             addItem(choice(items_by_type[container]), ctype)
 
-
-        # Method to print the tree
-        def print_rec(item, depth=0):
-            print depth * " --> " + item['item']
-            if len(item['children'].keys()):
-                for sitem in item['children']:
-                    print_rec(item['children'][sitem], depth + 1)
-
         # Method to print the tree
         def print_rec_content(item):
-            print "\n\n##" + item['item']
-            for k in item['content']:
-                for entry in item['content'][k]:
-                    print "%s: %s" % (k, entry)
+            dn = item['content']['dn'][0]
+            print "# " + item['item']
+            del(item['content']['dn'])
+            print ldif.CreateLDIF(dn, item['content'])
             if len(item['children'].keys()):
                 for sitem in item['children']:
                     print_rec_content(item['children'][sitem])
@@ -367,6 +360,9 @@ class Generator(object):
         print_rec_content(tree)
 
     def create_entry(self, template, base):
+        """
+        Create a new entry based on the given template
+        """
 
         self.current_object = {'base' : base}
 
@@ -374,6 +370,8 @@ class Generator(object):
         results = {}
         last_len = 0
         last_exception = None
+
+        # Walk through each line until all are processed
         while len(lines_left) and last_len != len(lines_left):
             last_len = len(lines_left)
             for i in range(0, last_len):
