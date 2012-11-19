@@ -2,7 +2,7 @@
 %contains=
 
 
-dn=%generate_unique_dn(%(base)s,%(cn)s)f
+dn=%generate_unique_dn(%(base)s,cn,%(cn)s)f
 sn=%sn()f
 givenName=%givenName()f
 cn=%(givenName)s %(sn)s

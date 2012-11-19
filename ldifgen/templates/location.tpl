@@ -2,7 +2,7 @@
 %contains=location,organization
 
 
-dn=%generate_unique_dn(%(base)s,%(l)s)f
+dn=%generate_unique_dn(%(base)s,l,%(l)s)f
 l=%sn()f
 o=%(l)s
 description=%(l)s
