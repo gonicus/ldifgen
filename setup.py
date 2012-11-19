@@ -23,8 +23,8 @@ setup(
         'Topic :: System :: Monitoring',
     ],
 
-    packages = find_packages('ldifgen'),
-    package_dir={'': 'ldifgen'},
+    packages = find_packages('.'),
+    package_dir={'': '.'},
 
     include_package_data = True,
     package_data = {
@@ -34,12 +34,10 @@ setup(
     zip_safe = True,
 
     install_requires = [
-        'ldap'
-    ]
+        'python_ldap'
+    ],
 
     entry_points = """
-        [ldifgen.methods]
-
         [console_scripts]
         ldifgen = ldifgen.main:main
     """,
