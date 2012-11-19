@@ -8,8 +8,8 @@ class GivenNameExtension(IExtension):
     _cache_m = None
     _cache_f = None
 
-    def __init__(self, allref):
-        super(GivenNameExtension, self).__init__(allref)
+    def __init__(self, generator):
+        super(GivenNameExtension, self).__init__(generator)
 
         data = pkg_resources.resource_filename('ldifgen', 'data')
         self._cache_m = list(open(os.path.join(data, "givennames-m.txt")))

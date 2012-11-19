@@ -148,13 +148,13 @@ class Generator(object):
         except KeyError:
             raise NoSuchFunction("extension %s is not available" % name)
 
-#        except Exception as e:
-#            raise TypeError("parameter mismatch for method %s: %s" % (name, str(e)))
+        except Exception as e:
+            raise TypeError("parameter mismatch for method %s: %s" % (name, str(e)))
 
     def _loadExtensions(self):
         for entry in pkg_resources.iter_entry_points("ldifgen.extension"):
             mod = entry.load()
-            self._extension[entry.name] = mod(self.all_items)
+            self._extension[entry.name] = mod(self)
 
     def _loadTemplates(self):
         """

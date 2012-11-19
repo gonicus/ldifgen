@@ -7,8 +7,8 @@ from ldifgen.extension import IExtension
 class SnExtension(IExtension):
     _cache = None
 
-    def __init__(self, allref):
-        super(SnExtension, self).__init__(allref)
+    def __init__(self, generator):
+        super(SnExtension, self).__init__(generator)
         data = pkg_resources.resource_filename('ldifgen', 'data')
         self._cache = list(open(os.path.join(data, "surnames.txt")))
 
