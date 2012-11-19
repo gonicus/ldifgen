@@ -40,5 +40,13 @@ setup(
     entry_points = """
         [console_scripts]
         ldifgen = ldifgen.main:main
+
+        [ldifgen.extension]
+        dob = ldifgen.extension.dob:DOBExtension
+        givenname = ldifgen.extension.givenname:GivenNameExtension
+        sn = ldifgen.extension.sn:SnExtension
+        multi_select = ldifgen.extension.multi_select:MultiSelectExtension
+        generate_unique_dn = ldifgen.extension.unique_dn:UniqueDNExtension
+        generate_unique_uid = ldifgen.extension.unique_uid:UniqueUidExtension
     """,
 )

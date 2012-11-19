@@ -37,12 +37,15 @@ class FunctionHandler(object):
         # Prepare parameter list. Separate parameter list into single parameters.
         params = {}
         param_id = 0
-        params[param_id] = []
+
         for item in tmp_params:
             if item == ",":
-                param_id = param_id + 1
+                param_id += 1
                 params[param_id] = []
                 continue
+
+            if not param_id in params:
+                params[param_id] = []
 
             params[param_id].append(item)
 
@@ -60,31 +63,38 @@ class FunctionHandler(object):
 
         Parameters will be processed before if necessary.
         """
-        try:
-            func = getattr(self.generator, self.name)
-        except:
-            raise NoSuchFunction("no such function %s!" % (self.name))
 
+        # Process the parameters list to have a single
+        # array containing the parameter as strings.
         params = []
         for para in self.params:
-            result = ['']
+
+            # Walk through all items of this parameter
+            # and combine them to a single string.
+            result = []
             for item in para:
+
+                # Combine strings
                 if type(item) == str:
                     tmp_res = []
                     for e in result:
                         tmp_res.append(e + item)
                     result = tmp_res
                 else:
+
+                    # Process non-string items and then append them to the
+                    # existing results
                     tmp = item.process()
                     tmp_res = []
                     for t in tmp:
                         for e in result:
                             tmp_res.append(e + t)
                     result = tmp_res
+
             params.append("".join(result))
 
-        res = func(params)
-        return res
+        print "->", params
+        return self.generator.runExtension(self.name, *params)
 
 
 class AttributeHandler(object):
@@ -113,43 +123,38 @@ class AttributeHandler(object):
 
 
 class Generator(object):
-    _use = {}
+
     _templates = {}
     _templatePath = None
+    _config = None
+    _extension = {}
 
     all_items = None
     tree_items = None
 
     def __init__(self, templatePath):
+        self._config = {'containerAmount': 20, 'leafAmount': 100, 'treeDepth': 5, 'base': 'dx=example,dc=net'}
         self._templatePath = templatePath
         self._loadTemplates()
         self._loadExtensions()
 
-    def generate_unique_dn(self, args):
-        res = ["cn=%s,%s" % (args[1], args[0])]
-        return res
+    def set(self, name, value):
+        self._config[name] = value
 
-    def generate_unique_uid(self, args):
-        uid = ''.join(args).lower()[0:8]
-        return [uid]
+    def runExtension(self, name, *params):
+        try:
+            return self._extension[name].execute(self.current_object, *params)
 
-    def select_multiple(self, args):
-        if "user" in self.all_items:
-            uids = [f['content']['uid'][0] for f in self.all_items['user']]
-            return(sample(uids, len(uids) % 10))
-        return []
+        except KeyError:
+            raise NoSuchFunction("extension %s is not available" % name)
 
-    def use(self, o_type, amount):
-        """
-        Tell the generator to use the given type of object while generating
-        the ldif.
-        """
-        if o_type not in self._templates:
-            raise NoSuchTemplateException("missing template for '%s'!" % (o_type))
-        self._use[o_type] = amount
+#        except Exception as e:
+#            raise TypeError("parameter mismatch for method %s: %s" % (name, str(e)))
 
     def _loadExtensions(self):
-        pass
+        for entry in pkg_resources.iter_entry_points("ldifgen.extension"):
+            mod = entry.load()
+            self._extension[entry.name] = mod(self.all_items)
 
     def _loadTemplates(self):
         """
@@ -237,10 +242,10 @@ class Generator(object):
         Generate the ldif output.
         """
 
-        _container_amount = 200
-        _leaf_amount = 1000
-        _max_depth = 10;
-        _base = "dc=gonicus,dc=de"
+        _container_amount = self._config['containerAmount']
+        _leaf_amount = self._config['leafAmount']
+        _max_depth = self._config['treeDepth']
+        _base = self._config['base']
 
         # The tree root
         tree = {'item': 'domain', 'children': {}, 'content': {'dn' : [_base]}, 'base': '', 'dn': ''}

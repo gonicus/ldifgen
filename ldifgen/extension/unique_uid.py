@@ -1,7 +1,7 @@
 import os
 import pkg_resources
 from random import randint, choice
-from ldifgen.extensions import IExtension
+from ldifgen.extension import IExtension
 
 
 class UniqueUidExtension(IExtension):
@@ -11,7 +11,7 @@ class UniqueUidExtension(IExtension):
         super(UniqueUidExtension, self).__init__(allref)
         self._cache = {}
 
-    def exec(self, entry, *args):
+    def execute(self, entry, *args):
         uid = ''.join(args).lower()[0:8]
         uid = uid.lower()
         return [uid]

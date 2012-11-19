@@ -1,4 +1,4 @@
-from ldifgen.extensions import IExtension
+from ldifgen.extension import IExtension
 from ldifgen.generator import NoSuchAttribute
 
 
@@ -9,12 +9,18 @@ class UniqueDNExtension(IExtension):
         super(UniqueDNExtension, self).__init__(allref)
         self._cache = {}
 
-    def exec(self, entry, rdn_attribute, base, value):
-        res = ["%s=%s,%s" % (rdn_attribute, value, base)]
+    def execute(self, entry, base, rdn_attribute):
+        print "-"*80
+        print entry
+        print "-"*80
+        if not rdn_attribute in entry:
+            raise NoSuchAttribute()
+
+        res = "%s=%s,%s" % (rdn_attribute, entry[rdn_attribute][0], base)
         if res in self._cache:
             #TODO: recursively find a not used RDN
             raise NoSuchAttribute()
 
         self._cache[res] = None
 
-        return res
+        return [res]

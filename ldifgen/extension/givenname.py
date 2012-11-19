@@ -1,7 +1,7 @@
 import os
 import pkg_resources
 from random import randint, choice
-from ldifgen.extensions import IExtension
+from ldifgen.extension import IExtension
 
 
 class GivenNameExtension(IExtension):
@@ -15,9 +15,9 @@ class GivenNameExtension(IExtension):
         self._cache_m = list(open(os.path.join(data, "givennames-m.txt")))
         self._cache_f = list(open(os.path.join(data, "givennames-f.txt")))
 
-    def exec(self, entry, multi_name_chance=100, gender=None):
+    def execute(self, entry, multi_name_chance=100, gender=None):
         if not gender:
-            gender = bool(randint(0, 1)
+            gender = bool(randint(0, 1))
 
         return [self._name_gen(self._cache_m if gender else self._cache_f, multi_name_chance)]
 
