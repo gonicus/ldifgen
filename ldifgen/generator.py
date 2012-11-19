@@ -94,7 +94,6 @@ class FunctionHandler(object):
 
             params.append("".join(result))
 
-        print "->", params
         return self.generator.runExtension(self.name, *params)
 
 
@@ -144,6 +143,7 @@ class Generator(object):
 
     def runExtension(self, name, *params):
         try:
+            print "-> exec", name, self.current_object, params
             return self._extension[name].execute(self.current_object, *params)
 
         except KeyError:
