@@ -6,9 +6,9 @@ from ldifgen.extension import IExtension
 
 class MultiSelectExtension(IExtension):
 
-    def execute(self, typ, attribute):
+    def execute(self, entry, typ, attribute, no_items):
         if typ in self.all_items:
             entities = [f['content'][attribute][0] for f in self.all_items[typ]]
-            return sample(entities, len(entities) % 10)
+            return sample(entities, len(entities) % int(no_items))
 
         return []

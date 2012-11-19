@@ -129,7 +129,7 @@ class Generator(object):
     _config = None
     _extension = {}
 
-    all_items = None
+    all_items = {}
     tree_items = None
 
     def __init__(self, templatePath):
@@ -143,7 +143,6 @@ class Generator(object):
 
     def runExtension(self, name, *params):
         try:
-            print "-> exec", name, self.current_object, params
             return self._extension[name].execute(self.current_object, *params)
 
         except KeyError:
