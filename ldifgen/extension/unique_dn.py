@@ -13,7 +13,7 @@ class UniqueDNExtension(IExtension):
         if not attribute in entry:
             raise NoSuchAttribute()
 
-        res = "%s=%s,%s" % (attribute, value[0], base)
+        res = "%s=%s,%s" % (attribute, value, base)
         if res in self._cache:
             #TODO: recursively find a not used RDN
             raise NoSuchAttribute()
