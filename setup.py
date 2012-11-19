@@ -43,9 +43,9 @@ setup(
 
         [ldifgen.extension]
         dob = ldifgen.extension.dob:DOBExtension
-        givenname = ldifgen.extension.givenname:GivenNameExtension
+        givenName = ldifgen.extension.givenname:GivenNameExtension
         sn = ldifgen.extension.sn:SnExtension
-        multi_select = ldifgen.extension.multi_select:MultiSelectExtension
+        select_multiple = ldifgen.extension.multi_select:MultiSelectExtension
         generate_unique_dn = ldifgen.extension.unique_dn:UniqueDNExtension
         generate_unique_uid = ldifgen.extension.unique_uid:UniqueUidExtension
     """,
