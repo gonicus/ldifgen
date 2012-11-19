@@ -72,7 +72,7 @@ class FunctionHandler(object):
 
             # Walk through all items of this parameter
             # and combine them to a single string.
-            result = []
+            result = ['']
             for item in para:
 
                 # Combine strings
