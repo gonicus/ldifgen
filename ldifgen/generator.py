@@ -24,7 +24,6 @@ class FunctionHandler(object):
     This class is used during the template parsing to replace
     function calls defined in the template with real functions.
     """
-
     name = None
     generator= None
     params = None
