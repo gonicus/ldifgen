@@ -49,5 +49,6 @@ setup(
         select_multiple = ldifgen.extension.multi_select:MultiSelectExtension
         generate_unique_dn = ldifgen.extension.unique_dn:UniqueDNExtension
         generate_unique_uid = ldifgen.extension.unique_uid:UniqueUidExtension
+        generate_password = ldifgen.extension.password:PasswordExtension
     """,
 )
