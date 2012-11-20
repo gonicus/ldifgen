@@ -1,3 +1,4 @@
+from itertools import combinations
 from ldifgen.extension import IExtension
 from ldifgen.generator import NoSuchAttribute
 
@@ -13,11 +14,19 @@ class UniqueDNExtension(IExtension):
         if not attribute in entry:
             raise NoSuchAttribute()
 
-        res = "%s=%s,%s" % (attribute, value, base)
-        if res in self._cache:
-            #TODO: recursively find a not used RDN
+        dn = "%s=%s,%s" % (attribute, value, base)
+        if dn in self._cache:
+            av_attrs = filter(lambda x: not x in ['objectClass', 'base', attribute], entry.keys())
+            for i in range(0, len(av_attrs)):
+                for c in combinations(av_attrs, i + 1):
+                    ndn = "%s=%s+%s,%s" % (attribute, value, "+".join(["%s=%s" % (rdna, entry[rdna][0]) for rdna in c]), base)
+                    if not ndn in self._cache:
+                        dn = ndn
+                        break
+
+        if dn in self._cache:
             raise NoSuchAttribute()
 
-        self._cache[res] = None
+        self._cache[dn] = None
 
-        return [res]
+        return [dn]

@@ -20,6 +20,10 @@ class NoSuchFunction(Exception):
     pass
 
 
+class SkipEntry(Exception):
+    pass
+
+
 class FunctionHandler(object):
     """
     This class is used during the template parsing to replace
@@ -291,10 +295,13 @@ class Generator(object):
 
         # Method to add a new item
         def addItem(item, ctype):
+            entry = self.create_entry(ctype, item['content']['dn'])
+            if not entry:
+                return None
             newitem = {'item': ctype,
                        'children': {},
                        'base': item['content']['dn'],
-                       'content': self.create_entry(ctype, item['content']['dn'])}
+                       'content': entry}
             allitems.append(newitem)
             if not ctype in self.all_items:
                 self.all_items[ctype] = []
@@ -325,7 +332,7 @@ class Generator(object):
             # Add forced elements
             if "force_append" in self._templates[ctype].parameter:
                 for fitem in self._templates[ctype].parameter['force_append'].split(","):
-                    addItem(new_item, fitem)
+                    it = addItem(new_item, fitem)
                     _container_amount -= 1
 
         while len(leaf_item_amounts):
@@ -341,7 +348,7 @@ class Generator(object):
 
             # Randomly choose one parent and add a leaf item
             container = choice(containers)
-            addItem(choice(self.all_items[container]), ctype)
+            it = addItem(choice(self.all_items[container]), ctype)
 
         # Method to print the tree
         def print_rec_content(item):
@@ -380,6 +387,8 @@ class Generator(object):
                     #print str(e)
                     last_exception = e
                     lines_left.append(lineid)
+                except SkipEntry as e:
+                    return None
 
         # There are still lines left ... break
         if lines_left:
