@@ -50,5 +50,8 @@ setup(
         generate_unique_dn = ldifgen.extension.unique_dn:UniqueDNExtension
         generate_unique_uid = ldifgen.extension.unique_uid:UniqueUidExtension
         generate_password = ldifgen.extension.password:PasswordExtension
+        generate_unique_id = ldifgen.extension.unique_id:UniqueIdExtension
+        generate_phone_number = ldifgen.extension.phone:PhoneExtension
+
     """,
 )
