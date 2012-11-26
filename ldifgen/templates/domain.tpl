@@ -1,5 +1,5 @@
 %amount=0
-%contains=organization,location
+%contains=organization,locality,organizationalUnit
 
 
 dn=%generate_unique_dn(%(base)s,dc,%(dc)s)f

@@ -2,7 +2,7 @@
 %contains=organization,locality,organizationalUnit
 %force_append=people_container,group_container
 
-dn=%generate_unique_dn(%(base)s,o,%(o)s)f
-o=%sn()f
-description=%(o)s
-objectClass=organization
+dn=%generate_unique_dn(%(base)s,ou,%(ou)s)f
+ou=%sn()f
+description=%(ou)s
+objectClass=organizationalUnit
