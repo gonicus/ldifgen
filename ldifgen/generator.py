@@ -399,5 +399,9 @@ class Generator(object):
 
         result = {}
         for line in self._templates[template].getLines():
-            result[line.attrName] = results[line.id]
+            if line.attrName in result:
+                result[line.attrName] = result[line.attrName] + results[line.id]
+            else:
+                result[line.attrName] = results[line.id]
+
         return result
