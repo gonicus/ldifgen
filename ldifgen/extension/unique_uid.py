@@ -24,8 +24,18 @@ class UniqueUidExtension(IExtension):
 
             mapping[arg] = [e.lower() for e in entry[arg]]
 
-        uid = fmt.format(**mapping)
-        uid = unidecode(uid.decode("utf-8"))
+        try:
+            uid = fmt.format(**mapping)
+            uid = unidecode(uid.decode("utf-8"))
+        except UnicodeDecodeError:
+            try:
+                fmt = "{sn[0]:.8}{givenName[0]:.1}"
+                uid = fmt.format(**mapping)
+                uid = unidecode(uid.decode("utf-8"))
+            except UnicodeDecodeError:
+                fmt = "{sn[0]:.7}{givenName[0]:.2}"
+                uid = fmt.format(**mapping)
+                uid = unidecode(uid.decode("utf-8"))
 
         if uid in self._cache:
             for idx in range(0, 99):
