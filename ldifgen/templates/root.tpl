@@ -9,3 +9,4 @@ o=%(dc)s
 description=%(dn)s
 objectClass=dcObject
 objectClass=organization
+objectClass=gosaDepartment
