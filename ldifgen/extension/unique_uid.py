@@ -25,7 +25,7 @@ class UniqueUidExtension(IExtension):
             mapping[arg] = [e.lower() for e in entry[arg]]
 
         uid = fmt.format(**mapping)
-        uid = unidecode(uid)
+        uid = unidecode(uid.decode("utf-8"))
 
         if uid in self._cache:
             for idx in range(0, 99):
