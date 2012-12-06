@@ -1,6 +1,6 @@
 %amount=0
 %contains=organization,locality,organizationalUnit,domain,samba-domain
-%force_append=people_container,group_container,ldap-admin-user,samba-domain
+%force_append=people_container,group_container,ldap-admin-user,samba-domain,systems_container
 
 
 dn=%(base)s

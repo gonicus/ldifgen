@@ -318,7 +318,7 @@ class Generator(object):
 
             # Add forced elements
             if "force_append" in self._templates[ctype].parameter:
-                for fitem in self._templates[ctype].parameter['force_append'].split(","):
+                for fitem in [f for f in self._templates[ctype].parameter['force_append'].split(",") if f]:
                     addItem(newitem, fitem)
 
             return newitem
@@ -326,7 +326,7 @@ class Generator(object):
 
         # Add forced elements to the root-entry
         if "force_append" in self._templates[_root_type].parameter:
-            for fitem in self._templates[_root_type].parameter['force_append'].split(","):
+            for fitem in [f for f in self._templates[_root_type].parameter['force_append'].split(",") if f]:
                 addItem(tree, fitem)
 
         # Create container tree.

@@ -1,6 +1,6 @@
 %amount=2
 %contains=organization,locality,organizationalUnit,country
-%force_append=people_container,group_container,ldap-admin-user
+%force_append=people_container,group_container,ldap-admin-user,systems_container
 
 dn=%generate_unique_dn(%(base)s,dc,%(dc)s)f
 dc=%structName()f
