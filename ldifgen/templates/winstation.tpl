@@ -3,7 +3,7 @@
 
 dn=%generate_unique_dn(%(base)s,cn,%(cn)s)f
 sambaPrimaryGroupSID=S-1-5-21-2313704895-2750903029-89245728-513
-displayName=%(cn)s$
+displayName=%(cn)s
 uidNumber=10001
 shadowInactive=0
 sambaPwdLastSet=1150285633
