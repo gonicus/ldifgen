@@ -1,10 +1,22 @@
 # -*- coding: utf-8 -*-
 import os
 import pkg_resources
+import string
 from random import randint, choice
 from unidecode import unidecode
 from ldifgen.extension import IExtension
 from ldifgen.generator import NoSuchAttribute
+
+
+class UniqueStaticUidExtension(IExtension):
+    _cache = None
+
+    def __init__(self, generator):
+        super(UniqueStaticUidExtension, self).__init__(generator)
+        self._cache = {}
+
+    def execute(self, entry, *args):
+        return [''.join([choice(string.letters + string.digits) for i in range(8)])]
 
 
 class UniqueUidExtension(IExtension):

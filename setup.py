@@ -50,6 +50,7 @@ setup(
         select_multiple = ldifgen.extension.multi_select:MultiSelectExtension
         generate_unique_dn = ldifgen.extension.unique_dn:UniqueDNExtension
         generate_unique_uid = ldifgen.extension.unique_uid:UniqueUidExtension
+        generate_unique_uid_static = ldifgen.extension.unique_uid:UniqueStaticUidExtension
         generate_password = ldifgen.extension.password:PasswordExtension
         generate_unique_id = ldifgen.extension.unique_id:UniqueIdExtension
         generate_phone_number = ldifgen.extension.phone:PhoneExtension
