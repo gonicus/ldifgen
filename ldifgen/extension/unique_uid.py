@@ -9,22 +9,26 @@ from ldifgen.generator import NoSuchAttribute
 
 
 class UniqueStaticUidExtension(IExtension):
-    _cache = None
 
     def __init__(self, generator):
         super(UniqueStaticUidExtension, self).__init__(generator)
-        self._cache = {}
+        if not 'uid' in self.generator.cache:
+            self.generator.cache['uid'] = []
 
     def execute(self, entry, *args):
-        return [''.join([choice(string.letters + string.digits) for i in range(8)])]
+        value = None
+        while value == None or value in self.generator.cache['uid']:
+            value = ''.join([choice(string.letters + string.digits) for i in range(8)])
+        self.generator.cache['uid'].append(value)
+        return [value]
 
 
 class UniqueUidExtension(IExtension):
-    _cache = None
 
     def __init__(self, generator):
         super(UniqueUidExtension, self).__init__(generator)
-        self._cache = {}
+        if not 'uid' in self.generator.cache:
+            self.generator.cache['uid'] = []
 
     def execute(self, entry, *args):
         mapping = {}
@@ -49,16 +53,16 @@ class UniqueUidExtension(IExtension):
                 uid = fmt.format(**mapping)
                 uid = unidecode(uid.decode("utf-8"))
 
-        if uid in self._cache:
+        if uid in self.generator.cache['uid']:
             for idx in range(0, 99):
                 nuid = "%s%02d" % (uid, idx)
-                if not nuid in self._cache:
+                if not nuid in self.generator.cache['uid']:
                     uid = nuid
                     break
 
-        if uid in self._cache:
+        if uid in self.generator.cache['uid']:
             raise NoSuchAttribute()
 
-        self._cache[uid] = None
+        self.generator.cache['uid'].append(uid)
 
         return [uid]

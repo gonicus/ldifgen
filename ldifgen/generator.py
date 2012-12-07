@@ -134,6 +134,7 @@ class Generator(object):
     _extension = {}
 
     all_items = {}
+    cache = {}
     tree_items = None
 
     def __init__(self, templatePath):
