@@ -1,7 +1,7 @@
 %amount=10
 %contains=
 
-dn=%generate_unique_dn(%(base)s,cn,%(cn)s)f
+dn=%generate_unique_dn(%(base)s,uid,%(uid)s)f
 sambaPrimaryGroupSID=S-1-5-21-2313704895-2750903029-89245728-513
 displayName=%(cn)s
 uidNumber=10001
